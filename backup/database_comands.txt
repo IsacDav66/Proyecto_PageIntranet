@@ -1,0 +1,50 @@
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE roles (
+    id SERIAL PRIMARY KEY,
+    role_name VARCHAR(255) UNIQUE NOT NULL
+);
+
+INSERT INTO roles (role_name) VALUES ('administrador'), ('estudiante');
+
+ALTER TABLE users
+ADD COLUMN role_id INTEGER REFERENCES roles(id);
+
+
+CREATE TABLE classes (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) UNIQUE NOT NULL
+);
+
+ALTER TABLE users
+ADD COLUMN class_id INTEGER REFERENCES classes(id);
+
+CREATE TABLE courses (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) UNIQUE NOT NULL,
+    description TEXT
+);
+
+CREATE TABLE course_files (
+    id SERIAL PRIMARY KEY,
+    course_id INTEGER REFERENCES courses(id),
+    filename VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE course_classes (
+    id SERIAL PRIMARY KEY,
+    course_id INTEGER REFERENCES courses(id),
+    class_id INTEGER REFERENCES classes(id)
+);
+
+CREATE TABLE weeks (
+    id SERIAL PRIMARY KEY,
+    course_id INTEGER REFERENCES courses(id),
+    week_number INTEGER,
+    week_name VARCHAR(255),
+    filename VARCHAR(255)
+);

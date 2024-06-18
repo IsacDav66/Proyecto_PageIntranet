@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Estudiantes</title>
+    <link rel="stylesheet" href="path_to_your_styles.css"> <!-- Asegúrate de enlazar tu archivo CSS -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f9fc;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 20px;
+        }
+
+        .form-container form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .form-container input,
+        .form-container select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 200px;
+        }
+
+        .form-container button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+
+        .student-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .student-list li {
+            background-color: white;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .class-select {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .class-select select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .class-select button {
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .class-select button:hover {
+            background-color: #0056b3;
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Lista de Estudiantes</h1>
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <div class="form-container">
+            <form method="post" action="/create_class">
+                <label for="class_name">Nombre de la Clase:</label>
+                <input type="text" id="class_name" name="class_name" required>
+                <button type="submit">Finalizar</button>
+            </form>
+
+            <div class="class-dropdown">
+                <label for="class_select">Clase:</label>
+                <form method="post" action="/student_list">
+                    <select id="class_select" name="class_select">
+                        <option value="">Todas las Clases</option>
+                        {% for class in classes %}
+                        <option value="{{ class[0] }}" {% if class[0]==selected_class %}selected{% endif %}>{{ class[0]
+                            }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit">Filtrar</button>
+                </form>
+            </div>
+        </div>
+
+        <ul class="student-list">
+            {% for student in students_with_classes %}
+            <li>
+                {{ student[0] }}
+                <div class="class-select">
+                    <form method="post" action="/assign_student">
+                        <input type="hidden" name="student_username" value="{{ student[0] }}">
+                        <select name="class_name">
+                            <option value="">Sin Asignar</option>
+                            {% for class in classes %}
+                            <option value="{{ class[0] }}" {% if class[0]==student[1] %}selected{% endif %}>{{ class[0]
+                                }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit">Asignar</button>
+                    </form>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+
+</html>

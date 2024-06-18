@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materiales del Curso</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding-top: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #007bff;
+            text-align: center;
+        }
+
+        .course-info {
+            margin-bottom: 20px;
+        }
+
+        .course-info h2 {
+            font-size: 1.2em;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .course-info p {
+            margin: 0;
+            color: #666;
+        }
+
+        .course-description {
+            font-size: 1em;
+            color: #444;
+            margin-bottom: 10px;
+        }
+
+        .course-files {
+            list-style: none;
+            padding: 0;
+        }
+
+        .course-files li {
+            margin-bottom: 5px;
+        }
+
+        .course-files a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .course-files a:hover {
+            text-decoration: underline;
+        }
+
+        .upload-form,
+        .add-week-form {
+            background-color: #f1f1f1;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+        }
+
+        .upload-form h2,
+        .add-week-form h2 {
+            font-size: 1.1em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .upload-form label,
+        .add-week-form label {
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .upload-form input[type="file"],
+        .add-week-form input[type="file"],
+        .upload-form input[type="text"],
+        .add-week-form input[type="text"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+
+        .upload-form button,
+        .add-week-form button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .upload-form button:hover,
+        .add-week-form button:hover {
+            background-color: #0056b3;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>{{ course_name }}</h1>
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <div class="course-info">
+            <h2>Descripción:</h2>
+            <p class="course-description">{{ course_description }}</p>
+        </div>
+
+        <div class="course-info">
+            <h2>Clase Asociada:</h2>
+            <p>{{ class_name }}</p>
+        </div>
+
+        {% if role == 'administrador' %}
+        <div class="upload-form">
+            <h2>Subir Archivo</h2>
+        <form method="post" action="{{ url_for('upload_file', course_name=course_name, course_id=course_id) }}"
+                enctype="multipart/form-data">
+                <label for="file">Seleccionar Archivo:</label>
+                <input type="file" id="file" name="file" required>
+                <button type="submit">Subir</button>
+            </form>
+        </div>
+
+        <div class="add-week-form">
+            <h2>Agregar Semana</h2>
+            <form method="post" action="{{ url_for('add_week', course_name=course_name) }}" enctype="multipart/form-data">
+                <label for="week_name">Nombre de la Semana:</label>
+                <input type="text" id="week_name" name="week_name" required>
+                <label for="week_file">Archivo de la Semana:</label>
+                <input type="file" id="week_file" name="week_file" required>
+                <button type="submit">Agregar Semana</button>
+            </form>
+        </div>
+        {% endif %}
+
+        <h2>Materiales del Curso</h2>
+        <ul class="course-files">
+            {% for file in files %}
+            <li>
+                <a href="{{ url_for('download_file', filename=file[0]) }}">{{ file[0] }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+        <h2>Semanas del Curso</h2>
+        {% if weeks %}
+        {% for week in weeks %}
+        <div class="week">
+            <p>Semana {{ week[0] }}: {{ week[1] }}</p>
+            <p><a href="{{ url_for('download_file', filename=week[2]) }}">Descargar Archivo de la Semana</a></p>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>No hay semanas disponibles.</p>
+        {% endif %}
+
+    </div>
+</body>
+
+</html>

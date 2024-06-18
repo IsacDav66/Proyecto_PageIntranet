@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Digital</title>
+    <link rel="stylesheet" href="../static/web/css/styles.css"> <!-- Enlaza el archivo CSS externo -->
+</head>
+
+<body>
+    <div class="portal-container">
+        <div class="portal-div">
+            <h3>Campus Digital</h3>
+            <a href="{{ url_for('campus') }}">Ir al Campus</a>
+        </div>
+        <div class="portal-div">
+            <h3>Correo</h3>
+            <a href="#">Ir al Correo</a>
+        </div>
+        <div class="portal-div">
+            <h3>Asistencia</h3>
+            <a href="#">Ver Asistencia</a>
+        </div>
+        <div class="portal-div">
+            <h3>Estado de Cuenta</h3>
+            <a href="#">Ver Estado</a>
+        </div>
+        {% if role == 'administrador' %}
+        <div class="portal-div">
+            <h3>Añadir Estudiantes</h3>
+            <a href="{{ url_for('add_student') }}">Añadir Estudiante</a>
+        </div>
+        <div class="portal-div">
+            <h3>Lista de Estudiantes</h3>
+            <a href="{{ url_for('student_list') }}">Ver Lista</a>
+        </div>
+        {% endif %}
+    </div>
+    <a href="{{ url_for('logout') }}" class="logout-button">Cerrar Sesión</a>
+
+    <script src="../static/web/js/scripts.js"></script>
+    
+</body>
+
+</html>

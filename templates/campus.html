@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Digital</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #007bff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .course-container {
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .course-header h2 {
+            color: #333;
+            margin: 0;
+        }
+
+        .course-description {
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .course-files {
+            list-style: none;
+            padding: 0;
+        }
+
+        .course-files li {
+            margin-bottom: 5px;
+        }
+
+        .course-files a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .course-files a:hover {
+            text-decoration: underline;
+        }
+
+        .create-course-form {
+            background-color: #f1f1f1;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .create-course-form h2 {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .create-course-form label {
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .create-course-form input,
+        .create-course-form textarea,
+        .create-course-form select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            width: 100%;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+
+        .create-course-form button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .create-course-form button:hover {
+            background-color: #0056b3;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Campus Digital</h1>
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if is_admin %}
+        <div class="create-course-form">
+            <h2>Crear Curso</h2>
+            <form method="post" action="/create_course">
+                <label for="course_name">Nombre del Curso:</label>
+                <input type="text" id="course_name" name="course_name" required>
+
+                <label for="course_description">Descripción del Curso:</label>
+                <textarea id="course_description" name="course_description"></textarea>
+
+                <label for="class_name">Clase:</label>
+                <select id="class_name" name="class_name">
+                    <option value="">Sin Clase</option>
+                    {% for class in classes %}
+                    <option value="{{ class[0] }}">{{ class[0] }}</option>
+                    {% endfor %}
+                </select>
+
+                <button type="submit">Finalizar</button>
+            </form>
+        </div>
+        {% endif %}
+
+        <h2>Cursos Disponibles</h2>
+        {% if session['role'] == 'administrador' %}
+        {% for course in courses_with_classes %}
+        <div class="course-container">
+            <div class="course-header">
+                <h2>{{ course[0] }}</h2>
+                <a href="{{ url_for('course_materials', course_name=course[0]) }}">Ver Materiales</a>
+            </div>
+            <div class="course-description">
+                {{ course[1] }}
+            </div>
+            <p>Clase: {{ course[2] }}</p>
+            <p>Class ID del curso: {{ course[3] }}</p> <!-- Registro de depuración -->
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>Class ID del estudiante: {{ session['class_id'] }}</p> <!-- Registro de depuración -->
+        {% for course in courses_with_classes %}
+        {% if course[3] == session['class_id'] %}
+        <div class="course-container">
+            <div class="course-header">
+                <h2>{{ course[0] }}</h2>
+                <a href="{{ url_for('course_materials', course_name=course[0]) }}">Ver Materiales</a>
+            </div>
+            <div class="course-description">
+                {{ course[1] }}
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+    </div>
+</body>
+
+</html>
