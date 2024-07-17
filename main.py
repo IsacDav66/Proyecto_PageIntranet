@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, session, send_from_directory, jsonify  
 import os
 from src.cn.data_base_connection import get_db_connection
 from werkzeug.utils import secure_filename
@@ -424,6 +424,34 @@ def logout():
     session.pop('username', None)
     session.pop('role', None)
     return redirect(url_for('index'))
+
+
+
+@app.route('/course/<course_name>/start_live_stream', methods=['GET', 'POST'])
+def start_live_stream(course_name):
+    if request.method == 'POST':
+        stream_title = request.form.get('stream_title')
+        return redirect(url_for('live_stream', course_name=course_name, stream_title=stream_title))
+    else:
+        # Handle GET method if needed
+        # For example, render a form to start live stream
+        return render_template('start_live_stream_form.html', course_name=course_name)
+
+
+@app.route('/course/<course_name>/live_stream', methods=['GET'])
+def live_stream(course_name):
+    stream_title = request.args.get('stream_title')
+    return render_template('live_stream.html', course_name=course_name, stream_title=stream_title)
+
+@app.route('/signal', methods=['POST'])
+def signal():
+    data = request.json
+    # Aquí se procesaría la señalización WebRTC, por ejemplo, enviarla al cliente WebRTC adecuadamente
+    return jsonify({'response': 'Signal processed'}), 200
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,63 @@
+<!-- live_stream.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transmisión en Vivo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        video {
+            width: 80%;
+            height: auto;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Transmisión en Vivo</h1>
+    <video id="localVideo" autoplay playsinline></video>
+    <script>
+        const streamTitle = "{{ stream_title }}"; // Obtén el título de la transmisión desde Flask
+        const videoElement = document.getElementById('localVideo');
+        if (streamTitle) {
+            document.title = `Transmisión en Vivo - ${streamTitle}`;
+        }
+        let stream = new MediaStream();
+        const configuration = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] };
+        let pc = new RTCPeerConnection(configuration);
+        pc.ontrack = (event) => {
+            stream.addTrack(event.track);
+            videoElement.srcObject = stream;
+        };
+        pc.onicecandidate = (event) => {
+            if (event.candidate) {
+                sendSignal({ candidate: event.candidate });
+            }
+        };
+        async function sendSignal(data) {
+            try {
+                const response = await fetch('/signal', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                console.log('Signal response:', result);
+            } catch (err) {
+                console.error('Error al enviar señal:', err);
+            }
+        }
+    </script>
+</body>
+
+</html>

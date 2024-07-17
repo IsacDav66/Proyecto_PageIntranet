@@ -171,3 +171,46 @@ button[type="submit"] {
 
     font-family: 'PPTelegraf-UltraBold';
 }
+
+.portal-div{
+    background-color:white;
+    border-radius: 20px;
+    width: 200px;
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+    font-size: 70%;
+    font-family: 'PPTelegraf-UltraBold';
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+.portal-container{
+        display: flex;
+        /* width: 90%; */
+        max-width: 1200px;
+        background-color: #FEE600;
+        /* border-radius: 10px; */
+        overflow: hidden;
+        margin: 20px auto;
+        border: none;
+}
+
+
+.left-portal, .right-portal {
+    /* padding: 40px; */
+    width: 50%;
+    box-sizing: border-box;
+}
+
+.logout-button{
+    border:aliceblue;
+    float: inline-end;
+    padding-right: 20px;
+    font-family: 'PPTelegraf-Regular';
+    font-size: 21px;
+}

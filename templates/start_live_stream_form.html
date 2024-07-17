@@ -1,0 +1,41 @@
+<!-- start_live_stream_form.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de Transmisión en Vivo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        input[type="text"],
+        input[type="submit"] {
+            margin-bottom: 10px;
+            padding: 8px;
+            width: 300px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Inicio de Transmisión en Vivo</h1>
+    <form action="/course/{{ course_name }}/start_live_stream" method="POST">
+        <label for="stream_title">Título de la Transmisión:</label>
+        <input type="text" id="stream_title" name="stream_title" required>
+        <input type="submit" value="Iniciar Transmisión">
+    </form>
+</body>
+
+</html>
