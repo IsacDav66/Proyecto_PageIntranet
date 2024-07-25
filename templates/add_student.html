@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f7f9fc;
+            background-color: #FEE600;
             color: #333;
             display: flex;
             justify-content: center;
@@ -28,7 +28,7 @@
 
         h1 {
             margin-bottom: 20px;
-            color: #007bff;
+            color: #000000;
         }
 
         form {
@@ -59,7 +59,7 @@
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #645b09;
         }
 
         .error {
@@ -78,8 +78,17 @@
         <form method="post">
             <label for="username">Nombre de usuario:</label>
             <input type="text" id="username" name="username" required>
+        
             <label for="password">Contraseña:</label>
             <input type="password" id="password" name="password" required>
+        
+            <label for="grade">Grado:</label>
+            <select id="grade" name="grade" required>
+                <option value="">Seleccione el grado</option>
+                <option value="primaria">Primaria</option>
+                <option value="secundaria">Secundaria</option>
+            </select>
+        
             <button type="submit">Añadir Estudiante</button>
         </form>
     </div>

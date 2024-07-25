@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Asistencia</title>
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css' rel='stylesheet' />
+    <link rel="stylesheet" href="styles.css"> <!-- Tu archivo CSS -->
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #FEE600;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+    background-color: #FEE600;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 36px;
+    font-weight: bold;
+    color: #000;
+    text-align: center;
+}
+
+.error {
+    color: red;
+    font-size: 18px;
+    text-align: center;
+}
+
+.calendar-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+#calendar {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Registro de Asistencia</h1>
+
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if role == 'administrador' %}
+        <div class="calendar-container">
+            <div id='calendar'></div>
+        </div>
+        {% else %}
+        <p>Solo los administradores pueden editar la asistencia.</p>
+        {% endif %}
+    </div>
+
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                editable: true,
+                selectable: true,
+                events: [
+                    // Aquí puedes añadir eventos de asistencia desde tu backend
+                ],
+                dateClick: function (info) {
+                    {% if role == 'administrador' %}
+                    let student = prompt('Ingrese el nombre del estudiante');
+                    if (student) {
+                        calendar.addEvent({
+                            title: student + ' asistió',
+                            start: info.dateStr,
+                            allDay: true,
+                            backgroundColor: 'green',
+                            borderColor: 'green'
+                        });
+                    }
+                    {% else %}
+                        alert('Solo los administradores pueden editar la asistencia.');
+            {% endif %}
+        }
+            });
+
+        calendar.render();
+        });
+    </script>
+</body>
+
+</html>

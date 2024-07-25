@@ -26,19 +26,20 @@
         <div class="right">
         <div class="portal-container">
             <div class="left-portal">
-                <a href="{{ url_for('campus') }}">
+                <a href="{{ url_for('centro_campus') }}">
                     <div class="portal-div">
                         <h3>CURSOS Y NOTAS</h3>
                     </div>
                 </a>
 
-                <a href="#">
+                
+                <a href="{{ url_for('solicitudes') }}">
                     <div class="portal-div">
                         <h3>SOLICITUDES Y RECLAMOS</h3>
                     </div>
                 </a>
 
-                <a href="#">
+                <a href="{{ url_for('asistencia') }}">
                     <div class="portal-div">
                         <h3>ASISTENCIAS</h3>
                     </div>
@@ -46,7 +47,7 @@
             </div>
 
             <div class="right-portal">
-                <a href="#">
+                <a href="{{ url_for('historial') }}">
                     <div class="portal-div">
                         <h3>HISTORIAL DE PAGO</h3>
                     </div>

@@ -9,30 +9,92 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            padding: 20px;
+            margin: 0;
+            padding: 0;
+            background-color: #FEE600;
+        }
+
+        .header {
+            width: 100%;
+            background-color: #000000;
+            color: #fff;
+            padding: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
         }
 
         .container {
-            max-width: 800px;
-            margin: auto;
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            width: 90%;
+            max-width: 1200px;
+            background-color: #FEE600;
+            overflow: hidden;
+            margin: 20px auto;
+            border: none;
         }
 
-        h1 {
-            color: #007bff;
-            text-align: center;
+        .create-course-form {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .create-course-form h2 {
+            font-size: 36px;
+            font-family: 'PPTelegraf-UltraBold';
             margin-bottom: 20px;
+            color: #000000;
+        }
+
+        .create-course-form label {
+            font-size: 24px;
+            font-family: 'PPTelegraf-Regular';
+            color: #333;
+        }
+
+        .create-course-form input,
+        .create-course-form select,
+        .create-course-form textarea {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+        }
+
+        .create-course-form button[type="submit"] {
+            padding: 15px 30px;
+            background-color: #000000;
+            color: #7c4a4a;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 20px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .create-course-form button[type="submit"]:hover {
+            background-color: #333333;
+            transform: scale(1.05);
+        }
+
+        .create-course-form button[type="submit"]:focus {
+            outline: none;
         }
 
         .course-container {
-            background-color: #f1f1f1;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 15px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
 
@@ -40,90 +102,144 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .course-header h2 {
-            color: #333;
+            font-size: 28px;
+            font-family: 'PPTelegraf-UltraBold';
             margin: 0;
+            color: #000000;
+        }
+
+        .course-header a {
+            font-size: 20px;
+            color: #0000FF;
+            text-decoration: underline;
+            font-family: 'PPTelegraf-Regular';
         }
 
         .course-description {
-            color: #555;
-            margin-bottom: 10px;
+            font-size: 18px;
+            font-family: 'PPTelegraf-Regular';
+            color: #555555;
         }
 
-        .course-files {
-            list-style: none;
-            padding: 0;
+        .course-container p {
+            font-size: 16px;
+            font-family: 'PPTelegraf-Regular';
+            color: #777777;
         }
 
-        .course-files li {
-            margin-bottom: 5px;
+        .welcome {
+            font-family: 'PPTelegraf-UltraBold';
+            font-size: 36px;
         }
 
-        .course-files a {
+        .icon {
+            width: 60px;
+        }
+
+        .class-icon {
+            width: 50%;
+            text-align: end;
+            padding-right: 20px;
+        }
+
+        .portal-div {
+            background-color: white;
+            border-radius: 20px;
+            width: 200px;
+            height: 90px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px;
+            font-size: 70%;
+            font-family: 'PPTelegraf-UltraBold';
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        a {
             text-decoration: none;
-            color: #007bff;
-            font-weight: bold;
+            color: inherit;
         }
 
-        .course-files a:hover {
-            text-decoration: underline;
-        }
-
-        .create-course-form {
-            background-color: #f1f1f1;
-            padding: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-
-        .create-course-form h2 {
-            font-size: 1.2em;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .create-course-form label {
-            margin-bottom: 5px;
-            color: #555;
-        }
-
-        .create-course-form input,
-        .create-course-form textarea,
-        .create-course-form select {
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            width: 100%;
-            margin-bottom: 10px;
-            font-size: 0.9em;
-        }
-
-        .create-course-form button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
+        .portal-container {
+            display: flex;
+            max-width: 1200px;
+            background-color: #FEE600;
+            overflow: hidden;
+            margin: 20px auto;
             border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 0.9em;
         }
 
-        .create-course-form button:hover {
-            background-color: #0056b3;
+        .left-portal,
+        .right-portal {
+            width: 50%;
+            box-sizing: border-box;
         }
 
-        .error {
-            color: red;
-            font-size: 0.9em;
+        .logout-button {
+            border: aliceblue;
+            float: right;
+            padding-right: 20px;
+            font-family: 'PPTelegraf-Regular';
+            font-size: 21px;
+        }
+
+        .container2 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 90vh;
+        }
+
+        .secundaria {
+            width: 40%;
+        }
+
+        .button-secundaria {
+            width: 70%;
+            height: 200px;
+            border-radius: 40px;
+            border: 5px solid #000000;
+            font-family: 'PPTelegraf-UltraBold';
+            font-size: 40px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .button-secundaria:hover {
+            background-color: #f0f0f0;
+            transform: scale(1.05);
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        button:hover {
+            background-color: #e0e0e0;
+            color: #555;
+            border-color: #aaa;
+        }
+
+        button:focus {
+            outline: none;
         }
     </style>
 </head>
 
 <body>
+    <div class="header">
+        <div class="welcome">
+            <h1>AUTISMO +</h1>
+        </div>
+        <div class="class-icon">
+            <img class="icon" src="../static/web/image/Diseño sin título (3).png" alt="">
+        </div>
+    </div>
     <div class="container">
         <h1>Campus Digital</h1>
         {% if error %}
@@ -134,28 +250,48 @@
         <div class="create-course-form">
             <h2>Crear Curso</h2>
             <form method="post" action="/create_course">
-                <label for="course_name">Nombre del Curso:</label>
-                <input type="text" id="course_name" name="course_name" required>
-
-                <label for="course_description">Descripción del Curso:</label>
-                <textarea id="course_description" name="course_description"></textarea>
-
-                <label for="class_name">Clase:</label>
-                <select id="class_name" name="class_name">
-                    <option value="">Sin Clase</option>
-                    {% for class in classes %}
-                    <option value="{{ class[0] }}">{{ class[0] }}</option>
-                    {% endfor %}
-                </select>
-
+                <div class="form-group">
+                    <label for="course_name">Nombre del Curso:</label>
+                    <input type="text" id="course_name" name="course_name" required>
+                </div>
+            
+                <div class="form-group">
+                    <label for="course_description">Descripción del Curso:</label>
+                    <textarea id="course_description" name="course_description"></textarea>
+                </div>
+            
+                <div class="form-group">
+                    <label for="class_name">Clase:</label>
+                    <select id="class_name" name="class_name">
+                        <option value="">Sin Clase</option>
+                        {% for class in classes %}
+                        <option value="{{ class[0] }}">{{ class[1] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            
+                <div class="form-group">
+                    <label for="grade">Nivel:</label>
+                    <select id="grade" name="grade">
+                        {% if selected_grade %}
+                        <option value="{{ selected_grade }}">{{ selected_grade.capitalize() }}</option>
+                        {% else %}
+                        <option value="primaria">Primaria</option>
+                        <option value="secundaria">Secundaria</option>
+                        {% endif %}
+                    </select>
+                </div>
+            
                 <button type="submit">Finalizar</button>
             </form>
+
         </div>
         {% endif %}
 
         <h2>Cursos Disponibles</h2>
         {% if session['role'] == 'administrador' %}
         {% for course in courses_with_classes %}
+        {% if not selected_grade or course[2] == selected_grade %}
         <div class="course-container">
             <div class="course-header">
                 <h2>{{ course[0] }}</h2>
@@ -164,14 +300,15 @@
             <div class="course-description">
                 {{ course[1] }}
             </div>
-            <p>Clase: {{ course[2] }}</p>
-            <p>Class ID del curso: {{ course[3] }}</p> <!-- Registro de depuración -->
+            <p>Clase: {{ course[3] }}</p>
+            <p>Class ID del curso: {{ course[4] }}</p>
         </div>
+        {% endif %}
         {% endfor %}
         {% else %}
-        <p>Class ID del estudiante: {{ session['class_id'] }}</p> <!-- Registro de depuración -->
+        <p>Class ID del estudiante: {{ student_class_id }}</p>
         {% for course in courses_with_classes %}
-        {% if course[3] == session['class_id'] %}
+        {% if course[4] == student_class_id %}
         <div class="course-container">
             <div class="course-header">
                 <h2>{{ course[0] }}</h2>
@@ -179,6 +316,8 @@
             </div>
             <div class="course-description">
                 {{ course[1] }}
+                <p>Clase: {{ course[3] }}</p>
+                <p>Class ID del curso: {{ course[4] }}</p>
             </div>
         </div>
         {% endif %}

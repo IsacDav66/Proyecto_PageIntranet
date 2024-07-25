@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Pagos</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #FEE600; /* Fondo amarillo */
+}
+
+.header {
+    width: 100%;
+    background-color: #000000;
+    color: #fff;
+    padding: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Alineación de elementos */
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    max-width: 1200px;
+    background-color: #FEE600; /* Fondo amarillo */
+    overflow: hidden;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px; /* Opcional */
+}
+
+.table-container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-family: 'PPTelegraf-Regular';
+    font-size: 18px;
+}
+
+th {
+    background-color: #000000;
+    color: #ffffff;
+    font-family: 'PPTelegraf-UltraBold';
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+h1 {
+    font-size: 36px;
+    font-family: 'PPTelegraf-UltraBold';
+    color: #000000;
+    margin-bottom: 20px;
+}
+
+.intro {
+    font-size: 18px;
+    font-family: 'PPTelegraf-Regular';
+    color: #555555;
+    margin-bottom: 20px;
+}
+
+.icon {
+    width: 40px; /* Ajusta el tamaño del icono aquí */
+}
+
+
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="welcome">
+            <h1>Campus Digital</h1>
+        </div>
+        <div class="class-icon">
+            <img class="icon" src="../static/web/image/Diseño sin título (3).png" alt="">
+        </div>
+    </div>
+    <div class="container">
+        <h1>Historial de Pagos</h1>
+        <p class="intro">A continuación se muestra un historial simulado de pagos realizados. Aquí puedes consultar los
+            detalles de cada transacción.</p>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Nombre del Curso</th>
+                        <th>Monto</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2024-07-10</td>
+                        <td>Curso de Matemáticas</td>
+                        <td>$50.00</td>
+                        <td>Completado</td>
+                    </tr>
+                    <tr>
+                        <td>2024-07-15</td>
+                        <td>Curso de Historia</td>
+                        <td>$40.00</td>
+                        <td>Completado</td>
+                    </tr>
+                    <tr>
+                        <td>2024-07-20</td>
+                        <td>Curso de Ciencias</td>
+                        <td>$60.00</td>
+                        <td>En Progreso</td>
+                    </tr>
+                    <tr>
+                        <td>2024-07-25</td>
+                        <td>Curso de Literatura</td>
+                        <td>$45.00</td>
+                        <td>Completado</td>
+                    </tr>
+                    <tr>
+                        <td>2024-07-30</td>
+                        <td>Curso de Arte</td>
+                        <td>$55.00</td>
+                        <td>Fallido</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

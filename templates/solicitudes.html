@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitudes y Reclamos</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Encabezado y contenedor principal */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #FEE600;
+}
+
+.header {
+    width: 100%;
+    background-color: #000000;
+    color: #fff;
+    padding: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    max-width: 1200px;
+    background-color: #FEE600;
+    overflow: hidden;
+    margin: 20px auto;
+    border: none;
+}
+
+h1 {
+    font-size: 36px;
+    font-family: 'PPTelegraf-UltraBold';
+    color: #000000;
+    margin-bottom: 20px;
+}
+
+/* Formulario */
+.form-container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h2 {
+    font-size: 28px;
+    font-family: 'PPTelegraf-UltraBold';
+    margin-bottom: 20px;
+    color: #000000;
+}
+
+.form-container label {
+    font-size: 20px;
+    font-family: 'PPTelegraf-Regular';
+    color: #333;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-container input, 
+.form-container select, 
+.form-container textarea {
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+.form-container button[type="submit"] {
+    padding: 15px 30px;
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 20px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.form-container button[type="submit"]:hover {
+    background-color: #333333;
+    transform: scale(1.05);
+}
+
+.intro {
+    font-size: 18px;
+    font-family: 'PPTelegraf-Regular';
+    color: #555555;
+    margin-bottom: 20px;
+}
+
+/* Estilo de botones y enlaces */
+button:hover {
+    background-color: #e0e0e0;
+    color: #555;
+    border-color: #aaa;
+}
+
+button:focus {
+    outline: none;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="welcome">
+            <h1>Campus Digital</h1>
+        </div>
+        <div class="class-icon">
+            <img class="icon" src="../static/web/image/Diseño sin título (3).png" alt="">
+        </div>
+    </div>
+    <div class="container">
+        <h1>Solicitudes y Reclamos</h1>
+        <p class="intro">Complete el siguiente formulario para enviar una solicitud o reclamo. Nos comprometemos a
+            atender su caso a la mayor brevedad posible.</p>
+
+        <div class="form-container">
+            <form method="post" action="/submit_request">
+                <div class="form-group">
+                    <label for="full_name">Nombre Completo:</label>
+                    <input type="text" id="full_name" name="full_name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Correo Electrónico:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Teléfono de Contacto:</label>
+                    <input type="tel" id="phone" name="phone">
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Asunto:</label>
+                    <select id="subject" name="subject" required>
+                        <option value="solicitud">Solicitud</option>
+                        <option value="reclamo">Reclamo</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Mensaje:</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+                </div>
+
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,277 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #FEE600;
+}
+
+.header {
+    width: 100%;
+    background-color: #000000;
+    color: #fff;
+    padding: 20px 0;
+    display: flex;
+}
+
+.container {
+    display: flex;
+    width: 90%;
+    max-width: 1200px;
+    background-color: #FEE600;
+    /* border-radius: 10px; */
+    overflow: hidden;
+    margin: 20px auto;
+    border: none;
+    flex-direction: column;
+}
+
+.left, .right {
+    padding: 40px;
+    width: 50%;
+    box-sizing: border-box;
+}
+
+.left {
+    background-color: #FEE600;
+    color: #000;
+}
+
+.left h2 {
+    font-size: 80px;
+    font-weight: bold;
+    font-family: 'MiFuente';
+}
+
+.left p {
+    margin: 20px 0;
+    font-size: 20px;
+    font-family: 'PPTelegraf-Regular';
+}
+
+.left button {
+    display: inline-block;
+    padding: 40px 10px;
+    background-color: #fff;
+    color: #000;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 25px;
+    font-family: 'PPTelegraf-Regular';
+}
+
+.left a {
+    display: block;
+    margin-top: 20px;
+    color: #000;
+    text-decoration: underline;
+    font-size: 20px;
+    margin-top: 70px;
+    font-family: 'PPTelegraf-Regular';
+}
+
+.right {
+    background-color: #FEE600;
+    color: #000;
+}
+
+.right h1 {
+    font-size: 50px;
+    font-weight: bold;
+    font-family: 'PPTelegraf-Regular';
+}
+
+.right p {
+    font-size: 50px;
+    margin: 20px 0;
+    font-weight: bold;
+    font-family: 'PPTelegraf-Regular';
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 30px;
+    margin-bottom: 5px;
+    font-family: 'PPTelegraf-Regular';
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 40px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    box-sizing: border-box;
+}
+
+button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.welcome{
+    padding-left: 20px;
+    /* background-color: red; */
+    width: 50%;
+    font-family: 'PPTelegraf-UltraBold';
+
+}
+.icon{
+    /* height:30px; */
+    width: 60px;
+    /* margin-left: auto; */
+}
+
+.class-icon{
+    /* background-color: blue; */
+    width: 50%;
+    /* margin-left: auto; */
+    text-align-last: end;
+    padding-right: 20px;
+}
+
+
+
+
+@font-face {
+    font-family: 'PPTelegraf-UltraBold';
+    src: url('../font/pptelegraf-free-for-personal-use/PPTelegraf-Free for personal use/PPTelegraf-UltraBold.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PPTelegraf-Regular';
+    src: url('../font/pptelegraf-free-for-personal-use/PPTelegraf-Free for personal use/PPTelegraf-Regular.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'PPTelegraf-UltraLight';
+    src: url('../font/pptelegraf-free-for-personal-use/PPTelegraf-Free for personal use/PPTelegraf-UltraLight.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+.left h2 {
+
+    font-family: 'PPTelegraf-UltraBold';
+}
+
+.portal-div{
+    background-color:white;
+    border-radius: 20px;
+    width: 200px;
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+    font-size: 70%;
+    font-family: 'PPTelegraf-UltraBold';
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+.portal-container{
+        display: flex;
+        /* width: 90%; */
+        max-width: 1200px;
+        background-color: #FEE600;
+        /* border-radius: 10px; */
+        overflow: hidden;
+        margin: 20px auto;
+        border: none;
+}
+
+
+.left-portal, .right-portal {
+    /* padding: 40px; */
+    width: 50%;
+    box-sizing: border-box;
+}
+
+.logout-button{
+    border:aliceblue;
+    float: inline-end;
+    padding-right: 20px;
+    font-family: 'PPTelegraf-Regular';
+    font-size: 21px;
+}
+
+.container2 {
+    display: flex;
+    margin: 2px;
+    padding: 2px;
+    width: fit-content;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh; /* Ajusta la altura según tus necesidades */
+}
+
+.secundaria{
+    width: 40%;
+    height: max-content;
+    /* background-color: aqua; */
+}
+
+.button-secundaria{
+    width: 70%;
+    height: 200px;
+    border-radius: 40px;
+    align-self: center;
+    border: #000000;
+    border-style: solid;
+    border-width: 5px;
+    appearance: none;
+    font-family: 'PPTelegraf-UltraBold';
+    font-size: 40px;
+}
+
+
+.buttons{
+    display:flex;
+    /* background-color: blue; */
+    justify-content: space-between;
+}
+
+button {
+    /* background-color: #f1f1f1; */
+    /* color: #333; */
+    /* border: 1px solid #ccc; */
+    /* padding: 8px 16px; */
+    /* font-size: 16px; */
+    /* cursor: pointer; */
+    /* text-decoration: none; */
+    /* display: inline-block; */
+    /* transition: background-color 0.3s, color 0.3s, border-color 0.3s; */
+}
+
+button:hover {
+    background-color: #e0e0e0;
+    color: #555;
+    border-color: #aaa;
+}
+
+button:focus {
+    outline: none;
+}

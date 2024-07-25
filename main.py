@@ -3,6 +3,7 @@ import os
 from src.cn.data_base_connection import get_db_connection
 from werkzeug.utils import secure_filename
 
+
 app = Flask(__name__)
 app.secret_key = 'tu_clave_secreta'  # Establece una clave secreta para la sesión
 
@@ -26,9 +27,9 @@ def login():
             try:
                 cursor = conn.cursor()
                 cursor.execute("""
-                    SELECT u.id, u.username, u.class_id, r.role_name 
-                    FROM users u 
-                    JOIN roles r ON u.role_id = r.id 
+                    SELECT u.id, u.username, u.class_id, r.role_name, u.grade
+                    FROM users u
+                    JOIN roles r ON u.role_id = r.id
                     WHERE u.username=%s AND u.password=%s
                 """, (username, password))
                 user = cursor.fetchone()
@@ -38,7 +39,8 @@ def login():
                     session['username'] = user[1]
                     session['class_id'] = user[2]
                     session['role'] = user[3]
-                    print(f"Usuario autenticado: {session['username']}, class_id: {session['class_id']}")  # Registro de depuración
+                    session['grade'] = user[4]  # Almacenar el grado en la sesión
+                    print(f"Usuario autenticado: {session['username']}, class_id: {session['class_id']}, grade: {session['grade']}")  # Registro de depuración
                     return redirect(url_for('portal'))
                 else:
                     return render_template('login.html', error="Usuario o contraseña incorrectos")
@@ -87,12 +89,16 @@ def add_student():
             # Lógica para crear una nueva cuenta de estudiante
             username = request.form['username']
             password = request.form['password']
+            grade = request.form['grade']
 
             conn = get_db_connection()
             if conn:
                 try:
                     cursor = conn.cursor()
-                    cursor.execute("INSERT INTO users (username, password, role_id) VALUES (%s, %s, (SELECT id FROM roles WHERE role_name = 'estudiante'))", (username, password))
+                    cursor.execute("""
+                        INSERT INTO users (username, password, role_id, grade) 
+                        VALUES (%s, %s, (SELECT id FROM roles WHERE role_name = 'estudiante'), %s)
+                    """, (username, password, grade))
                     conn.commit()
                     return redirect(url_for('portal'))
                 except Exception as e:
@@ -113,32 +119,31 @@ def student_list():
             try:
                 cursor = conn.cursor()
                 selected_class = request.form.get('class_select')
+                selected_grade = request.form.get('grade_select')
 
                 # Obtener la lista de clases
                 cursor.execute("SELECT name FROM classes")
                 classes = cursor.fetchall()
 
-                # Obtener la lista de estudiantes con sus clases asignadas
+                # Construir la consulta SQL con los filtros seleccionados
+                query = """
+                    SELECT u.username, c.name AS class_name, u.class_id, u.grade
+                    FROM users u
+                    LEFT JOIN classes c ON u.class_id = c.id
+                    WHERE u.role_id = (SELECT id FROM roles WHERE role_name = 'estudiante')
+                """
+                params = []
                 if selected_class:
-                    # Filtrar por la clase seleccionada
-                    cursor.execute("""
-                        SELECT u.username, c.name AS class_name, u.class_id
-                        FROM users u
-                        LEFT JOIN classes c ON u.class_id = c.id
-                        WHERE u.role_id = (SELECT id FROM roles WHERE role_name = 'estudiante')
-                        AND c.name = %s
-                    """, (selected_class,))
-                else:
-                    # Mostrar todos los estudiantes
-                    cursor.execute("""
-                        SELECT u.username, c.name AS class_name, u.class_id
-                        FROM users u
-                        LEFT JOIN classes c ON u.class_id = c.id
-                        WHERE u.role_id = (SELECT id FROM roles WHERE role_name = 'estudiante')
-                    """)
+                    query += " AND c.name = %s"
+                    params.append(selected_class)
+                if selected_grade:
+                    query += " AND u.grade = %s"
+                    params.append(selected_grade)
+
+                cursor.execute(query, tuple(params))
                 students_with_classes = cursor.fetchall()
 
-                return render_template('student_list.html', students_with_classes=students_with_classes, classes=classes, selected_class=selected_class)
+                return render_template('student_list.html', students_with_classes=students_with_classes, classes=classes, selected_class=selected_class, selected_grade=selected_grade)
             except Exception as e:
                 print(f"Error al interactuar con la base de datos: {e}")
                 return render_template('student_list.html', error="Error al obtener la lista de estudiantes")
@@ -146,6 +151,7 @@ def student_list():
                 conn.close()
     else:
         return redirect(url_for('login'))
+
 
 # Ruta para crear una nueva clase (solo administradores)
 @app.route('/create_class', methods=['POST'])
@@ -207,19 +213,34 @@ def campus():
         if conn:
             try:
                 cursor = conn.cursor()
-                # Obtener la lista de cursos con su clase asociada
-                cursor.execute("""
-                    SELECT c.name, c.description, cl.name as class_name, cl.id as class_id
-                    FROM courses c 
-                    JOIN course_classes cc ON c.id = cc.course_id 
-                    JOIN classes cl ON cc.class_id = cl.id
-                """)
+                
+                # Obtener el grado desde el parámetro de consulta o la sesión
+                grade = request.args.get('grade', session.get('grade', None))
+                
+                # Obtener la lista de cursos con su grado asociado y nombre de clase
+                if grade:
+                    cursor.execute("""
+                        SELECT c.name, c.description, c.grade, cl.name AS class_name, cl.id AS class_id
+                        FROM courses c 
+                        LEFT JOIN course_classes cc ON c.id = cc.course_id 
+                        LEFT JOIN classes cl ON cc.class_id = cl.id
+                        WHERE c.grade = %s
+                    """, (grade,))
+                else:
+                    cursor.execute("""
+                        SELECT c.name, c.description, c.grade, cl.name AS class_name, cl.id AS class_id
+                        FROM courses c 
+                        LEFT JOIN course_classes cc ON c.id = cc.course_id 
+                        LEFT JOIN classes cl ON cc.class_id = cl.id
+                    """)
+                
                 courses_with_classes = cursor.fetchall()
                 print(f"Cursos obtenidos: {courses_with_classes}")  # Registro de depuración
 
-                # Obtener la lista de clases
-                cursor.execute("SELECT name FROM classes")
+                # Obtener la lista de clases con sus IDs para filtrado
+                cursor.execute("SELECT id, name FROM classes")
                 classes = cursor.fetchall()
+                print(f"Clases obtenidas: {classes}")  # Registro de depuración
 
                 # Obtener la lista de estudiantes con sus clases asignadas
                 cursor.execute("""
@@ -233,12 +254,55 @@ def campus():
 
                 # Verificar si el usuario es administrador
                 is_admin = session['role'] == 'administrador'
-                return render_template('campus.html', courses_with_classes=courses_with_classes, classes=classes, is_admin=is_admin, students_with_classes=students_with_classes)
+                
+                # Verificar si class_id está en la sesión
+                student_class_id = session.get('class_id')
+                print(f"Class ID del estudiante: {student_class_id}")  # Registro de depuración
+
+                # Pasar los datos a la plantilla
+                return render_template('campus.html', courses_with_classes=courses_with_classes, classes=classes, is_admin=is_admin, students_with_classes=students_with_classes, selected_grade=grade, student_class_id=student_class_id)
             except Exception as e:
                 print(f"Error al interactuar con la base de datos: {e}")
                 return render_template('campus.html', error="Error al obtener los cursos")
             finally:
                 conn.close()
+    else:
+        return redirect(url_for('login'))
+
+
+
+@app.route('/centro_campus')
+def centro_campus():
+    if 'username' in session:
+        role = session['role']
+        grade = session.get('grade')  # Asegúrate de que el grado está almacenado en session
+        return render_template('centro-campus.html', role=role, grade=grade)
+    else:
+        return redirect(url_for('login'))
+    
+@app.route('/solicitudes')
+def solicitudes():
+    if 'username' in session:
+        role = session['role']
+        grade = session.get('grade')  # Asegúrate de que el grado está almacenado en session
+        return render_template('solicitudes.html', role=role, grade=grade)
+    else:
+        return redirect(url_for('login'))
+@app.route('/historial')
+def historial():
+    if 'username' in session:
+        role = session['role']
+        grade = session.get('grade')  # Asegúrate de que el grado está almacenado en session
+        return render_template('historial.html', role=role, grade=grade)
+    else:
+        return redirect(url_for('login'))
+    
+@app.route('/asistencia')
+def asistencia():
+    if 'username' in session:
+        role = session['role']
+        grade = session.get('grade')  # Asegúrate de que el grado está almacenado en session
+        return render_template('asistencias.html', role=role, grade=grade)
     else:
         return redirect(url_for('login'))
 
@@ -248,7 +312,10 @@ def create_course():
     if 'role' in session and session['role'] == 'administrador':
         course_name = request.form.get('course_name')
         course_description = request.form.get('course_description')
-        class_name = request.form.get('class_name')
+        class_id = request.form.get('class_name')  # Usar class_id en lugar de class_name
+        grade = request.form.get('grade')  # Nuevo campo para el nivel del curso
+
+        print(f"Curso: {course_name}, Descripción: {course_description}, Clase ID: {class_id}, Nivel: {grade}")
 
         conn = get_db_connection()
         if conn:
@@ -256,19 +323,24 @@ def create_course():
                 cursor = conn.cursor()
 
                 # Insertar el nuevo curso
-                cursor.execute("INSERT INTO courses (name, description) VALUES (%s, %s)", (course_name, course_description))
+                cursor.execute("INSERT INTO courses (name, description, grade) VALUES (%s, %s, %s)", (course_name, course_description, grade))
                 conn.commit()
 
                 # Obtener el ID del curso recién creado
                 cursor.execute("SELECT id FROM courses WHERE name = %s", (course_name,))
                 course_id = cursor.fetchone()[0]
+                print(f"ID del curso recién creado: {course_id}")
 
-                # Asignar la clase al curso
-                if class_name:
-                    cursor.execute("SELECT id FROM classes WHERE name = %s", (class_name,))
-                    class_id = cursor.fetchone()[0]
-                    cursor.execute("INSERT INTO course_classes (course_id, class_id) VALUES (%s, %s)", (course_id, class_id))
+                # Asignar la clase al curso si se ha seleccionado una
+                if class_id:
+                    print(f"Asignando clase con ID: {class_id}")
+                    cursor.execute("""
+                        INSERT INTO course_classes (course_id, class_id) 
+                        VALUES (%s, %s)
+                    """, (course_id, class_id))
                     conn.commit()
+                else:
+                    print("No se ha seleccionado ninguna clase.")
 
                 return redirect(url_for('campus'))
             except Exception as e:
@@ -278,6 +350,9 @@ def create_course():
                 conn.close()
     else:
         return redirect(url_for('campus'))
+
+
+
 
 @app.route('/add_week/<course_name>', methods=['POST'])
 def add_week(course_name):

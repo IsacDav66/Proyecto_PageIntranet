@@ -9,7 +9,7 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f7f9fc;
+            background-color: #FEE600;
             color: #333;
             margin: 0;
             padding: 0;
@@ -24,7 +24,7 @@
 
         h1 {
             margin-bottom: 20px;
-            color: #007bff;
+            color: #000000;
         }
 
         .form-container {
@@ -51,7 +51,7 @@
 
         .form-container button {
             padding: 10px 15px;
-            background-color: #007bff;
+            background-color: #000000;
             color: white;
             border: none;
             border-radius: 4px;
@@ -60,7 +60,7 @@
         }
 
         .form-container button:hover {
-            background-color: #0056b3;
+            background-color: #919191;
         }
 
         .student-list {
@@ -94,7 +94,7 @@
 
         .class-select button {
             padding: 8px 12px;
-            background-color: #007bff;
+            background-color: #000000;
             color: white;
             border: none;
             border-radius: 4px;
@@ -128,15 +128,25 @@
             </form>
 
             <div class="class-dropdown">
-                <label for="class_select">Clase:</label>
+                <label for="class_select">Clase:</label> 
                 <form method="post" action="/student_list">
                     <select id="class_select" name="class_select">
                         <option value="">Todas las Clases</option>
                         {% for class in classes %}
-                        <option value="{{ class[0] }}" {% if class[0]==selected_class %}selected{% endif %}>{{ class[0]
-                            }}</option>
+                        <option value="{{ class[0] }}" {% if class[0]==selected_class %}selected{% endif %}>
+                            {{ class[0] }}</option>
                         {% endfor %}
                     </select>
+
+                    <label for="grade_select">Grado:</label>
+                    <select id="grade_select" name="grade_select">
+                        <option value="">Todos los Grados</option>
+                        <option value="primaria" {% if selected_grade=='primaria' %}selected{% endif %}>Primaria
+                        </option>
+                        <option value="secundaria" {% if selected_grade=='secundaria' %}selected{% endif %}>
+                            Secundaria</option>
+                    </select>
+
                     <button type="submit">Filtrar</button>
                 </form>
             </div>
@@ -152,8 +162,8 @@
                         <select name="class_name">
                             <option value="">Sin Asignar</option>
                             {% for class in classes %}
-                            <option value="{{ class[0] }}" {% if class[0]==student[1] %}selected{% endif %}>{{ class[0]
-                                }}</option>
+                            <option value="{{ class[0] }}" {% if class[0]==student[1] %}selected{% endif %}>
+                                {{ class[0] }}</option>
                             {% endfor %}
                         </select>
                         <button type="submit">Asignar</button>

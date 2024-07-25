@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro Campus</title>
+    <link rel="stylesheet" href="../static/web/css/centro-campus.css">
+</head>
+<body>
+    <div class="header">
+        <h1 class="welcome">AUTISMO +</h1>
+        <div class="class-icon">
+            <img class="icon" src="../static/web/image/Diseño sin título (3).png" alt="">
+        </div>
+    </div>
+    <div class="container">
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+        {% if session['role'] == 'administrador' %}
+        <div class="container2">
+            <div class="buttons">
+                <img class="secundaria" src="../static/web/image/primaria_web.png" alt="">
+                <button class="button-secundaria" onclick="setGradeAndRedirect('primaria')">Primaria</button>
+            </div>
+            <div class="buttons">
+                <img class="secundaria" src="../static/web/image/secundaria_web.png" alt="">
+                <button class="button-secundaria" onclick="setGradeAndRedirect('secundaria')">Secundaria</button>
+            </div>
+        </div>
+        {% endif %}
+        <div class="container2">
+            {% if session['grade'] == 'primaria' %}
+            <div class="buttons">
+                <img class="secundaria" src="../static/web/image/primaria_web.png" alt="">
+                <button class="button-secundaria" onclick="setGradeAndRedirect('primaria')">Primaria</button>
+            </div>
+            {% elif session['grade'] == 'secundaria' %}
+            <div class="buttons">
+                <img class="secundaria" src="../static/web/image/secundaria_web.png" alt="">
+                <button class="button-secundaria" onclick="setGradeAndRedirect('secundaria')">Secundaria</button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        function setGradeAndRedirect(grade) {
+            fetch('/set_grade', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ grade: grade }),
+            }).then(() => {
+                window.location.href = '/campus?grade=' + grade;
+            });
+        }
+    </script>
+</body>
+
+</html>

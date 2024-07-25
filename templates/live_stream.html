@@ -1,4 +1,3 @@
-<!-- live_stream.html -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,58 +5,123 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transmisión en Vivo</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Asegúrate de tener este archivo CSS con el estilo adecuado -->
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #FEE600;
             text-align: center;
-            margin-top: 20px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .header {
+            background-color: #000;
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: auto;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         video {
-            width: 80%;
+            width: 100%;
             height: auto;
             border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+
+        .status {
+            margin-top: 20px;
+            font-size: 24px;
+            font-family: 'PPTelegraf-Regular';
+            color: #333;
+        }
+
+        .button-container {
+            margin-top: 20px;
+        }
+
+        .button {
+            padding: 10px 20px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #333;
+        }
+
+        .button:disabled {
+            background-color: #666;
+            cursor: not-allowed;
         }
     </style>
 </head>
 
 <body>
-    <h1>Transmisión en Vivo</h1>
-    <video id="localVideo" autoplay playsinline></video>
+    <div class="container">
+        <header class="header">
+            <h1>Transmisión en Vivo</h1>
+        </header>
+        <div class="video-container">
+            <video id="localVideo" autoplay playsinline>
+                <!-- Video de prueba para simular la transmisión -->
+                <source src="sample-video.mp4" type="video/mp4"> <!-- Asegúrate de tener un video de prueba -->
+                Tu navegador no soporta la etiqueta de video.
+            </video>
+        </div>
+        <div class="status">
+            <p>Transmisión en Vivo - {{ stream_title }}</p>
+        </div>
+        <div class="button-container">
+            <button id="startStreamButton" class="button">Transmitir Pantalla</button>
+        </div>
+    </div>
     <script>
-        const streamTitle = "{{ stream_title }}"; // Obtén el título de la transmisión desde Flask
-        const videoElement = document.getElementById('localVideo');
-        if (streamTitle) {
-            document.title = `Transmisión en Vivo - ${streamTitle}`;
-        }
-        let stream = new MediaStream();
-        const configuration = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] };
-        let pc = new RTCPeerConnection(configuration);
-        pc.ontrack = (event) => {
-            stream.addTrack(event.track);
-            videoElement.srcObject = stream;
-        };
-        pc.onicecandidate = (event) => {
-            if (event.candidate) {
-                sendSignal({ candidate: event.candidate });
-            }
-        };
-        async function sendSignal(data) {
+        async function startLiveStream() {
             try {
-                const response = await fetch('/signal', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
-                const result = await response.json();
-                console.log('Signal response:', result);
+                const localVideo = document.getElementById('localVideo');
+                const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+                localVideo.srcObject = stream;
+                
+                // Aquí puedes añadir la lógica para transmitir el video usando WebRTC o algún servidor de medios
             } catch (err) {
-                console.error('Error al enviar señal:', err);
+                console.error("Error al obtener la pantalla para transmitir:", err);
             }
         }
+
+        startLiveStream();
     </script>
 </body>
-
 </html>
