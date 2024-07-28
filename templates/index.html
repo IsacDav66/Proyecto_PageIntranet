@@ -8,8 +8,8 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f7f9fc;
-            color: #333;
+            background-color: #FEE600;
+            color: #000000;
             margin: 0;
             padding: 0;
             display: flex;
@@ -25,7 +25,7 @@
 
         h1 {
             margin-bottom: 20px;
-            color: #007bff;
+            color: #000000;
         }
 
         .links {
@@ -35,7 +35,7 @@
         .links a {
             margin-right: 20px;
             text-decoration: none;
-            color: #007bff;
+            color: #000000;
             transition: color 0.3s;
         }
 
@@ -44,10 +44,21 @@
         }
 
         footer {
-            background-color: #333;
+            background-color: #000000;
             color: white;
             text-align: center;
             padding: 10px;
+        }
+        .buttons{
+                background-color: #000000;
+    color: white;
+    display: table-cell;
+    height: 150px;
+    align-content: space-evenly;
+    border-radius: 40px;
+    font-size: 50px;
+    padding: 50px;
+    font-family: fantasy;
         }
     </style>
 </head>
@@ -55,10 +66,11 @@
 <body>
     <header>
         <div class="container">
-            <h1>Bienvenido a la Universidad XYZ</h1>
+            <h1>Bienvenido a AUTISMO +</h1>
             <div class="links">
-                <a href="{{ url_for('login') }}">Iniciar Sesión</a>
-                <a href="{{ url_for('register') }}">Registrarse</a>
+                
+                <a href="{{ url_for('login') }}"> <div class="buttons">Iniciar Sesión</div> </a>
+                <a href="{{ url_for('register') }}"><div class="buttons">Registrarse</div></a>
             </div>
         </div>
     </header>

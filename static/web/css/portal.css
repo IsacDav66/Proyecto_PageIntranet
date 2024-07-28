@@ -214,3 +214,16 @@ a{
     font-family: 'PPTelegraf-Regular';
     font-size: 21px;
 }
+
+
+        .buttons{
+                background-color: #000000;
+    color: white;
+    display: table-cell;
+    height: 10px;
+    align-content: space-evenly;
+    border-radius: 40px;
+    font-size: 30px;
+    padding: 20px;
+    font-family: fantasy;
+        }
