@@ -3,6 +3,7 @@ import os
 from src.cn.data_base_connection import get_db_connection
 from werkzeug.utils import secure_filename
 
+import re
 
 app = Flask(__name__)
 app.secret_key = 'tu_clave_secreta'  # Establece una clave secreta para la sesión
@@ -523,6 +524,98 @@ def signal():
     data = request.json
     # Aquí se procesaría la señalización WebRTC, por ejemplo, enviarla al cliente WebRTC adecuadamente
     return jsonify({'response': 'Signal processed'}), 200
+
+
+
+
+
+
+
+#-----------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+@app.route('/reset_password_request', methods=['GET', 'POST'])
+def reset_password_request():
+    if request.method == 'POST':
+        email = request.form.get('email')
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT username FROM users WHERE email = %s", (email,))
+        user = cursor.fetchone()
+
+        if user:
+            # Redirigir al usuario a la página para cambiar la contraseña
+            return redirect(url_for('reset_password', email=email))
+        else:
+            return render_template('reset_password_request.html', error="No se encontró una cuenta con ese correo electrónico.")
+
+    return render_template('reset_password_request.html')
+
+
+@app.route('/reset_password', methods=['GET', 'POST'])
+def reset_password():
+    email = request.args.get('email')  # Obtener el correo electrónico de la URL
+
+    if request.method == 'POST':
+        new_password = request.form.get('new_password')
+        new_username = request.form.get('new_username')
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        
+        # Actualizar la contraseña y el nombre de usuario en la base de datos
+        if new_username:
+            cursor.execute("UPDATE users SET username = %s WHERE email = %s", (new_username, email))
+        cursor.execute("UPDATE users SET password = %s WHERE email = %s", (new_password, email))
+        
+        conn.commit()
+        conn.close()
+
+        return redirect(url_for('login', message="Tu contraseña y/o nombre de usuario han sido actualizados con éxito."))
+
+    return render_template('reset_password.html', email=email)
+
+
+@app.route('/vincular_correo', methods=['GET', 'POST'])
+def vincular_correo():
+    if 'username' in session:
+        if request.method == 'POST':
+            email = request.form.get('email')
+            
+            # Validar el formato del correo electrónico
+            email_regex = r'^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$'
+            if not re.match(email_regex, email, re.IGNORECASE):
+                return render_template('vincular_correo.html', error="El correo electrónico ingresado no es válido.")
+            
+            try:
+                conn = get_db_connection()
+                cursor = conn.cursor()
+                
+                # Verificar si el correo electrónico ya está en uso por otro usuario
+                cursor.execute("SELECT 1 FROM users WHERE email = %s AND username != %s", (email, session['username']))
+                if cursor.fetchone():
+                    return render_template('vincular_correo.html', error="El correo electrónico ya está en uso por otro usuario.")
+                
+                # Actualizar el correo del usuario en la base de datos
+                cursor.execute("UPDATE users SET email = %s WHERE username = %s", (email, session['username']))
+                conn.commit()
+                conn.close()
+
+                return redirect(url_for('portal'))
+            except Exception as e:
+                print(f"Error al vincular el correo electrónico: {e}")
+                return render_template('vincular_correo.html', error="Error al vincular el correo electrónico")
+
+        return render_template('vincular_correo.html')
+    else:
+        return redirect(url_for('login'))
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
