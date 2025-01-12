@@ -60,5 +60,7 @@ La aplicación está diseñada para ser una plataforma integral de gestión y ap
 
 Este proyecto es un buen ejemplo de una aplicación web educativa. Cumple con los requerimientos básicos para la gestión de usuarios y contenido. Como fue hecho para un trabajo, se enfoca en la funcionalidad y en demostrar las habilidades en programación web.
 
+**Enlace del proyecto:** https://proyecto-pageintranet.onrender.com (Base de datos desactualizada)
+
 ![image](https://github.com/user-attachments/assets/a65f1aca-0eb8-4d35-80f2-861aee1f245c)      ![image](https://github.com/user-attachments/assets/d1566707-8162-4d9c-a8bd-d81a303951c4)
 
